@@ -1,0 +1,35 @@
+name: Build EXE for Win7
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:   # 允许手动触发
+
+jobs:
+  build:
+    runs-on: windows-latest   # 虽然是 Win10，但 PyInstaller 4.10 打包出的 exe 可在 Win7 运行
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.7 (Win7 兼容)
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.7"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pyinstaller==4.10
+
+      - name: Build exe
+        run: |
+          pyinstaller --noconsole --onefile --icon=icon.ico main.py
+
+      - name: Upload exe artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: my-win7-exe
+          path: dist/main.exe
