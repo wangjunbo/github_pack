@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>PyWebView 双向通信 Demo</title>
+</head>
+<body style="font-family: Arial; text-align:center; padding-top:50px;">
+  <h2>PyWebView 双向通信 Demo</h2>
+
+  <input type="text" id="name" placeholder="Enter your name">
+  <button onclick="sayHello()">Say Hello</button>
+
+  <p id="result"></p>
+  <p id="pythonMessage" style="color:blue; font-weight:bold;"></p>
+
+  <script>
+    // JS 调用 Python
+    async function sayHello() {
+      let name = document.getElementById("name").value;
+      if (!name) name = "Anonymous";
+      let response = await window.pywebview.api.say_hello(name);
+      document.getElementById("result").innerText = response;
+    }
+
+    // Python 调用 JS
+    function showMessage(msg) {
+      document.getElementById("pythonMessage").innerText = msg;
+    }
+  </script>
+</body>
+</html>
