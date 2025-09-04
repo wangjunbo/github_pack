@@ -1,31 +1,32 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8">
-  <title>PyWebView 双向通信 Demo</title>
+    <title>文件夹处理器</title>
+    <style>
+        body { font-family: Arial; margin: 20px; }
+        button { padding: 10px; margin: 10px 0; }
+        #result { margin-top: 20px; padding: 10px; border: 1px solid #ddd; }
+    </style>
 </head>
-<body style="font-family: Arial; text-align:center; padding-top:50px;">
-  <h2>PyWebView 双向通信 Demo</h2>
+<body>
+    <h1>文件夹处理工具</h1>
+    <button onclick="selectFolder()">选择文件夹并处理</button>
+    <div id="result"></div>
 
-  <input type="text" id="name" placeholder="Enter your name">
-  <button onclick="sayHello()">Say Hello</button>
-
-  <p id="result"></p>
-  <p id="pythonMessage" style="color:blue; font-weight:bold;"></p>
-
-  <script>
-    // JS 调用 Python
-    async function sayHello() {
-      let name = document.getElementById("name").value;
-      if (!name) name = "Anonymous";
-      let response = await window.pywebview.api.say_hello(name);
-      document.getElementById("result").innerText = response;
-    }
-
-    // Python 调用 JS
-    function showMessage(msg) {
-      document.getElementById("pythonMessage").innerText = msg;
-    }
-  </script>
+    <script>
+        async function selectFolder() {
+            const response = await fetch('http://localhost:5000/api/select_folder');
+            const data = await response.json();
+            
+            if (data.error) {
+                document.getElementById('result').innerHTML = `错误: ${data.error}`;
+            } else {
+                document.getElementById('result').innerHTML = `
+                    <strong>已选择文件夹:</strong> ${data.path}<br>
+                    <strong>处理结果:</strong> ${data.message}
+                `;
+            }
+        }
+    </script>
 </body>
 </html>
