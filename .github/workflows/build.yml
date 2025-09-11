@@ -26,10 +26,10 @@ jobs:
 
       - name: Build exe
         run: |
-          pyinstaller --noconsole --onefile --icon=icon.ico --add-data "index.html;." main.py
+          pyinstaller --onefile --icon=icon.ico  main.py
 
       - name: Upload exe artifact
         uses: actions/upload-artifact@v4
         with:
-          name: my-win7-exe
+          name: keyiclient
           path: dist/main.exe
