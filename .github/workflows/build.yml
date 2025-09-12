@@ -24,6 +24,9 @@ jobs:
           pip install -r requirements.txt
           pip install pyinstaller==4.10
 
+      - name: Check installed packages
+        run: pip list
+
       - name: Build exe
         run: |
           pyinstaller --onefile --icon=icon.ico  main.py
